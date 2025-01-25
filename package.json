@@ -1,5 +1,5 @@
 {
-    "name": "my-package",
+    "name": "barcode-react",
     "version": "0.0.1",
     "main": "dist/index.js",
     "module": "dist/index.mjs",
@@ -7,19 +7,14 @@
     "exports": {
         ".": {
             "import": "./dist/index.mjs",
-            "require": "./dist/index.js",
-            "types": "./dist/index.d.ts"
+            "types": "./dist/index.d.ts",
+            "require": "./dist/index.js"
         }
     },
     "scripts": {
-        "build": "tsup ./src/index.ts --format cjs,esm --dts",
+        "build": "tsup ./src/index.tsx --format cjs,esm --dts",
         "release": "pnpm run build && changeset publish",
         "lint": "tsc"
-    },
-    "devDependencies": {
-        "@changesets/cli": "^2.27.12",
-        "tsup": "^8.3.5",
-        "typescript": "^5.7.3"
     },
     "publishConfig": {
         "access": "public",
@@ -36,6 +31,19 @@
     },
     "author": "Kanak Kholwal (@kanakkholwal)",
     "license": "MIT",
-    "keywords":[],
-    "description": "A template repository for typescript packages"
+    "keywords": [],
+    "description": "A template repository for typescript packages",
+    "dependencies": {
+        "install": "^0.13.0",
+        "jsbarcode": "^3.11.6",
+        "react": "latest",
+        "react-dom": "latest"
+    },
+    "devDependencies": {
+        "@changesets/cli": "^2.27.12",
+        "@types/react": "^19.0.8",
+        "@types/react-dom": "^19.0.3",
+        "tsup": "^8.3.5",
+        "typescript": "^5.7.3"
+    }
 }
