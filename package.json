@@ -1,0 +1,41 @@
+{
+    "name": "my-package",
+    "version": "0.0.1",
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "scripts": {
+        "build": "tsup ./src/index.ts --format cjs,esm --dts",
+        "release": "pnpm run build && changeset publish",
+        "lint": "tsc"
+    },
+    "devDependencies": {
+        "@changesets/cli": "^2.27.12",
+        "tsup": "^8.3.5",
+        "typescript": "^5.7.3"
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/",
+        "tag": "latest",
+        "directory": "dist"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kanakkholwal/pdf-tables-parser.git"
+    },
+    "bugs": {
+        "url": "https://github.com/kanakkholwal/pdf-tables-parser/issues"
+    },
+    "author": "Kanak Kholwal (@kanakkholwal)",
+    "license": "MIT",
+    "keywords":[],
+    "description": "A template repository for typescript packages"
+}
