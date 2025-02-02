@@ -1,5 +1,4 @@
 
-
 # Barcode React
 
 [![npm version](https://badge.fury.io/js/barcode-react.svg)](https://www.npmjs.com/packagebarcode-react) [![Publish](https://github.com/kanakkholwal/barcode-react/actions/workflows/publish.yml/badge.svg)](https://github.com/kanakkholwal/barcode-react/actions/workflows/publish.yml)

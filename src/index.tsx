@@ -1,33 +1,33 @@
-import { useEffect, useRef } from "react";
 import JsBarcode from "jsbarcode";
 import type React from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 export interface Options {
   width?: number;
   height?: number;
   renderer?: "canvas" | "img" | "svg";
   format?:
-  | "CODE39"
-  | "CODE128"
-  | "CODE128A"
-  | "CODE128B"
-  | "CODE128C"
-  | "EAN13"
-  | "EAN8"
-  | "EAN5"
-  | "EAN2"
-  | "UPC"
-  | "UPCE"
-  | "ITF14"
-  | "ITF"
-  | "MSI"
-  | "MSI10"
-  | "MSI11"
-  | "MSI1010"
-  | "MSI1110"
-  | "pharmacode"
-  | "codabar"
-  | "GenericBarcode";
+    | "CODE39"
+    | "CODE128"
+    | "CODE128A"
+    | "CODE128B"
+    | "CODE128C"
+    | "EAN13"
+    | "EAN8"
+    | "EAN5"
+    | "EAN2"
+    | "UPC"
+    | "UPCE"
+    | "ITF14"
+    | "ITF"
+    | "MSI"
+    | "MSI10"
+    | "MSI11"
+    | "MSI1010"
+    | "MSI1110"
+    | "pharmacode"
+    | "codabar"
+    | "GenericBarcode";
   displayValue?: boolean;
   fontOptions?: string;
   font?: string;
@@ -72,62 +72,29 @@ function Barcode({
   value,
   className = "",
   renderer = "svg",
-  id = "barcode",
+  id = "barcode-react",
   ...props
 }: BarcodeProps) {
-  const renderElementRef = useRef<HTMLCanvasElement | SVGElement | HTMLImageElement>(null);
+  const renderElementRef = useRef<SVGSVGElement | HTMLCanvasElement | HTMLImageElement | null>(null);
 
-  useEffect(() => {
-    const options = {
+  // Memoize options to prevent re-creation on every render
+  const barcodeOptions = useMemo(
+    () => ({
       ...defaultOptions,
-      width: props.width,
-      height: props.height,
-      format: props.format,
-      displayValue: props.displayValue,
-      fontOptions: props.fontOptions,
-      font: props.font,
-      textAlign: props.textAlign,
-      textPosition: props.textPosition,
-      textMargin: props.textMargin,
-      fontSize: props.fontSize,
-      background: props.background,
-      lineColor: props.lineColor,
-      margin: props.margin,
-      marginTop: props.marginTop,
-      marginBottom: props.marginBottom,
-      marginLeft: props.marginLeft,
-      marginRight: props.marginRight,
-      ean128: props.ean128,
-    };
+      ...props,
+    }),
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    [props] // Only re-create when props change
+  );
+  useEffect(() => {
+    if (!renderElementRef.current) return;
 
-    if (renderElementRef.current) {
-      try {
-        JsBarcode(renderElementRef.current, value, options);
-      } catch (error) {
-        console.error("Error generating barcode:", error);
-      }
+    try {
+      JsBarcode(renderElementRef.current, value, barcodeOptions);
+    } catch (error) {
+      console.error("Error generating barcode:", error);
     }
-  }, [
-    value,
-    props.width,
-    props.height,
-    props.format,
-    props.displayValue,
-    props.fontOptions,
-    props.font,
-    props.textAlign,
-    props.textPosition,
-    props.textMargin,
-    props.fontSize,
-    props.background,
-    props.lineColor,
-    props.margin,
-    props.marginTop,
-    props.marginBottom,
-    props.marginLeft,
-    props.marginRight,
-    props.ean128,
-  ]);
+  }, [value, barcodeOptions]);
 
   if (renderer === "svg") {
     return <svg ref={renderElementRef as React.RefObject<SVGSVGElement>} id={id} className={className} />
@@ -140,7 +107,6 @@ function Barcode({
   }
 
   return null;
-
 }
 
 export default Barcode;
